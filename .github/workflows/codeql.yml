@@ -33,13 +33,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up CodeQL
+    - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
+        config-file: .github/codeql/config.yml
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
         queries: +security-extended,security-and-quality
-        config-file: .github/codeql/config.yml # Optional, specify a custom config file for advanced rules
 
     - name: Build the code (if required)
       if: matrix.build-mode == 'manual'
