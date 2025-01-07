@@ -1,35 +1,16 @@
 name: "Custom Sensitive Data and Privacy Rules"
 packs:
-  # Include CodeQL's built-in security packs
   - name: codeql/security-extended
   - name: codeql/sensitive-data
   - name: codeql/security-and-quality
 
 queries:
-  # Custom queries for API Keys, Secret Keys, and Sensitive Data
-  - uses: github/codeql/javascript-queries/api-key-leaks.ql
+  - uses: github/codeql/javascript-queries/secrets-in-logs.ql
   - uses: github/codeql/python-queries/sensitive-information-leaks.ql
+  - uses: github/codeql/python-queries/logged-sensitive-information.ql
   - uses: github/codeql/go-queries/sensitive-data-exposure.ql
-
-  # Privacy bugs and common data leak checks
-  - uses: github/codeql/javascript-queries/privacy-bugs.ql
-  - uses: github/codeql/python-queries/common-data-leak.ql
-
-  # Detect hard-coded credentials in various formats
   - uses: github/codeql/csharp-queries/hardcoded-credentials.ql
   - uses: github/codeql/java-queries/hardcoded-credentials.ql
-
-  # Detect open AWS S3 buckets and other cloud misconfigurations
-  - uses: github/codeql/python-queries/open-cloud-resources.ql
-  - uses: github/codeql/go-queries/cloud-misconfiguration.ql
-
-  # Check for exposure of Personally Identifiable Information (PII)
-  - uses: github/codeql/javascript-queries/exposed-personal-data.ql
-  - uses: github/codeql/ruby-queries/pii-leakage.ql
-
-  # Detect GitHub tokens, API keys, and other common secrets in logs
-  - uses: github/codeql/javascript-queries/secrets-in-logs.ql
-  - uses: github/codeql/python-queries/logged-sensitive-information.ql
 
 include:
   - "**/*.js"
@@ -40,7 +21,6 @@ include:
   - "**/*.rb"
 
 exclude:
-  # Ignore files in third-party libraries or ignored directories
   - "node_modules/**"
   - "vendor/**"
   - "build/**"
