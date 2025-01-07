@@ -1,59 +1,7 @@
-name: "CodeQL Vulnerability and Sensitive Data Scan"
-
-on:
-  push:
-    branches: 
-      - "main"
-      - "develop"
-  pull_request:
-    branches: 
-      - "main"
-      - "develop"
-  schedule:
-    - cron: '0 2 * * 0' # Runs every Sunday at 2 AM UTC
-
-jobs:
-  codeql-analysis:
-    name: CodeQL Analysis (${{ matrix.language }})
-    runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-      contents: read
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-        - language: javascript-typescript
-          build-mode: none
-        - language: python
-          build-mode: none
-        - language: java-kotlin
-          build-mode: manual
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Set up CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
-        build-mode: ${{ matrix.build-mode }}
-        queries: +security-extended,security-and-quality
-        config-file: .github/codeql/config.yml # Optional, specify a custom config file for advanced rules
-
-    - name: Build the code (if required)
-      if: matrix.build-mode == 'manual'
-      run: |
-        echo "Building code for analysis..."
-        # Add your build commands here
-        ./gradlew build
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{ matrix.language }}"
-
-    - name: Post Analysis Results
-      if: always()
-      run: |
-        echo "Analysis completed. Check the Security tab in GitHub for results."
+- name: Initialize CodeQL
+  uses: github/codeql-action/init@v3
+  with:
+    config-file: .github/codeql/config.yml
+    languages: ${{ matrix.language }}
+    build-mode: ${{ matrix.build-mode }}
+    queries: +security-extended,security-and-quality
