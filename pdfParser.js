@@ -62,3 +62,5 @@ async function parseResume(filePath) {
         return null;
     }
 }
+
+// npm install pdf-parse 
